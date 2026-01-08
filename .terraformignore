@@ -1,0 +1,43 @@
+# Ignore files that are not needed for Terraform execution
+
+# Version control
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration
+.env
+*.tfvars
+!terraform.tfvars.example
+
+# Backup files
+*.bak
+*.backup
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Terraform files (these are already handled by Terraform)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log

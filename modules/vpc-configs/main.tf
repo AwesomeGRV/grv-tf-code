@@ -9,6 +9,12 @@ data "aws_vpc" "customer_vpc" {
 resource "aws_cloudwatch_log_group" "flow_logs" {
   name              = "/${local.resource_name_prefix}/vpc-flowlogs"
   retention_in_days = 90
+  tags = merge(
+    var.tags,
+    {
+      Name = "${local.resource_name_prefix}-vpc-flowlogs"
+    }
+  )
 }
 
 data "aws_iam_policy_document" "vpc_flowlog_policy" {
@@ -30,6 +36,12 @@ resource "aws_iam_policy" "vpc_flowlog_policy" {
   name   = "${var.namespace}-vpc-flowlog-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.vpc_flowlog_policy.json
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.namespace}-vpc-flowlog-policy"
+    }
+  )
 }
 
 resource "aws_iam_role" "flow_logs_role" {
@@ -44,6 +56,12 @@ resource "aws_iam_role" "flow_logs_role" {
       }
     }]
   })
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.namespace}-vpc-flowlog-role"
+    }
+  )
 }
 
 resource "aws_iam_policy_attachment" "vpc_flowlog" {
@@ -57,7 +75,10 @@ resource "aws_flow_log" "vpcflowlog" {
   log_destination = aws_cloudwatch_log_group.flow_logs.arn
   traffic_type    = "ALL"
   vpc_id          = var.vpc_id
-  tags = {
-    Name = "${local.resource_name_prefix}-vpcflowlog"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "${local.resource_name_prefix}-vpcflowlog"
+    }
+  )
 }
